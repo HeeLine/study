@@ -16,7 +16,6 @@ class SavedList extends StatefulWidget {
 class _SavedListState extends State<SavedList> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("saveList"),
@@ -26,36 +25,30 @@ class _SavedListState extends State<SavedList> {
   }
 
   Widget _buildList() {
-
     return StreamBuilder(
         stream: wordBloc.data,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           Set<WordPair> saved = Set<WordPair>();
 
-          if(snapshot.hasData)
+          if (snapshot.hasData)
             saved.addAll(snapshot.data.saved);
           else
             wordBloc.currentData;
 
+          return ListView.builder(
+              itemCount: saved.length * 2,
+              itemBuilder: (context, index) {
+                if (index.isOdd) {
+                  return const Divider();
+                }
+                var realIndex = index ~/ 2;
 
-          if(saved.isNotEmpty) {
-            return ListView.builder(
-                itemCount: saved.length * 2, itemBuilder: (context, index) {
-              if (index.isOdd) {
-                return const Divider();
-              }
-              var realIndex = index ~/ 2;
-
-              return _buildRow(saved.toList()[realIndex]);
-            });
-          }
-
-          return CircularProgressIndicator();
+                return _buildRow(saved.toList()[realIndex]);
+              });
         });
   }
 
   Widget _buildRow(WordPair pair) {
-
     return ListTile(
       title: Text(
         pair.asPascalCase,
@@ -63,7 +56,8 @@ class _SavedListState extends State<SavedList> {
       ),
       onTap: () {
         setState(() {
-          wordBloc.wordEventBloc.wordEventSink.add(WordEvent(flag:  WordEventFlag.SAVE_REMOVED_EORD_EVENT, wordPair:  pair));
+          wordBloc.wordEventBloc.wordEventSink.add(WordEvent(
+              flag: WordEventFlag.SAVE_REMOVED_EORD_EVENT, wordPair: pair));
         });
       },
     );
