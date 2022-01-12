@@ -1,6 +1,5 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter02/src/model/words.dart';
 import 'package:flutter02/src/ui/saved_list.dart';
 import 'package:flutter02/src/bloc/words/words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +10,7 @@ class RandomList extends StatefulWidget {
 }
 
 class _RandomListState extends State<RandomList> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,10 +48,12 @@ class _RandomListState extends State<RandomList> {
 
                 if (index.isOdd) {
                   if (realIndex == wordList.length - 1) {
-                    MakeRandomWords makeRandomWords = MakeRandomWords(10);
-                    wordsBloc.add(makeRandomWords);
+                    wordsBloc.add(const MakeRandomWords(10));
+                    return const Divider();
                   }
-                  return const Divider();
+                  else {
+                    return const Divider();
+                  }
                 }
 
                 WordPair pair = wordList[realIndex];
@@ -60,9 +62,8 @@ class _RandomListState extends State<RandomList> {
               });
         }
 
-        MakeRandomWords makeRandomWords = MakeRandomWords(10);
-        wordsBloc.add(makeRandomWords);
-        return CircularProgressIndicator();
+        wordsBloc.add(const MakeRandomWords(10));
+        return const CircularProgressIndicator();
       },
     );
   }
@@ -81,14 +82,25 @@ class _RandomListState extends State<RandomList> {
       onTap: () {
         setState(() {
           if (alreadySaved) {
-            RemovedSaveWord event = RemovedSaveWord(pair);
-            wordsBloc.add(event);
+            wordsBloc.add(RemovedSaveWord(pair));
           } else {
-            AddSaveWord event = AddSaveWord(pair);
-            wordsBloc.add(event);
+            wordsBloc.add(AddSaveWord(pair));
           }
         });
         // print(pair.asPascalCase);
+      },
+    );
+  }
+
+  Widget _lastRow() {
+    final wordsBloc = BlocProvider.of<WordsBloc>(context);
+    return ListTile(
+      leading: Container(
+        height: double.infinity,
+        child: Icon(Icons.star),
+      ),
+      onTap: () {
+        wordsBloc.add(MakeRandomWords(10));
       },
     );
   }

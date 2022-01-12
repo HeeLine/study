@@ -14,6 +14,8 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
       yield* _mapAddSaveWordToState(event);
     } else if (event is RemovedSaveWord) {
       yield* _mapRemoveSaveWordToState(event);
+    } else if (event is ReloadWords) {
+      yield WordsReload(state.words);
     } else {
       yield WordsLoading(state.words);
     }
@@ -22,6 +24,7 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   Stream<WordsState> _mapMakeRandomWordsToState(MakeRandomWords event) async* {
     try {
       yield WordsMakeRandom(state.words, event.count);
+      yield WordsReload(state.words);
     } catch (_) {
       print("error");
       yield WordsLoading(state.words);

@@ -8,6 +8,14 @@ abstract class WordsEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class ReloadWords extends WordsEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'ReloadWords';
+}
+
 //MAKE_RANDOM_WORD_EVENT, SAVE_ADD_WORD_EVENT, SAVE_REMOVED_EORD_EVENT
 class MakeRandomWords extends WordsEvent {
   final int count;

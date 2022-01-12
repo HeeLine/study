@@ -12,7 +12,6 @@ abstract class WordsState extends Equatable {
   List<Object> get props => [];
 }
 
-@immutable
 class WordsLoading extends WordsState {
 
   @override
@@ -20,6 +19,15 @@ class WordsLoading extends WordsState {
 
   WordsLoading(this.words);
 }
+
+class WordsReload extends WordsState {
+
+  @override
+  final Words words;
+
+  WordsReload(this.words);
+}
+
 
 class WordsMakeRandom extends WordsState {
 
@@ -56,7 +64,7 @@ class WordsAddSave extends WordsState {
   }
 
   @override
-  String toString() => 'WordsMakeRandom { words: $words , WordPair: $pair }';
+  String toString() => 'WordsAddSave { words: $words , WordPair: $pair }';
 }
 
 class WordsRemoveSave extends WordsState {
@@ -75,5 +83,5 @@ class WordsRemoveSave extends WordsState {
   }
 
   @override
-  String toString() => 'WordsMakeRandom { words: $words , WordPair: $pair }';
+  String toString() => 'WordsRemoveSave { words: $words , WordPair: $pair }';
 }
