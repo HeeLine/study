@@ -1,14 +1,9 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter02/src/bloc/word_bloc.dart';
+import 'package:flutter02/src/bloc/words/words.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SavedList extends StatefulWidget {
-  // const SaveList({Key? key}) : super(key: key);
-
-  // SavedList({required this.saved});
-
-  // final Set<WordPair>  saved;
-
   @override
   State<SavedList> createState() => _SavedListState();
 }
@@ -26,17 +21,13 @@ class _SavedListState extends State<SavedList> {
   }
 
   Widget _buildList() {
+    final wordsBloc = BlocProvider.of<WordsBloc>(context);
+    // return BlocBuilder<WordsBloc, WordsState>(
+    return BlocBuilder(
+        bloc: wordsBloc,
+        builder: (BuildContext context, WordsState state) {
 
-    return StreamBuilder(
-        stream: wordBloc.data,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          Set<WordPair> saved = Set<WordPair>();
-
-          if(snapshot.hasData)
-            saved.addAll(snapshot.data.saved);
-          else
-            wordBloc.currentData;
-
+          Set<WordPair> saved = state.words.saved;
 
           if(saved.isNotEmpty) {
             return ListView.builder(
@@ -51,11 +42,12 @@ class _SavedListState extends State<SavedList> {
           }
 
           return CircularProgressIndicator();
-        });
+        }
+    );
   }
 
   Widget _buildRow(WordPair pair) {
-
+    final wordsBloc = BlocProvider.of<WordsBloc>(context);
     return ListTile(
       title: Text(
         pair.asPascalCase,
@@ -63,7 +55,8 @@ class _SavedListState extends State<SavedList> {
       ),
       onTap: () {
         setState(() {
-          wordBloc.wordEventBloc.wordEventSink.add(WordEvent(flag:  WordEventFlag.SAVE_REMOVED_EORD_EVENT, wordPair:  pair));
+          RemovedSaveWord event = RemovedSaveWord(pair);
+          wordsBloc.add(event);
         });
       },
     );
