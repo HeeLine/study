@@ -100,7 +100,7 @@ class _RandomListState extends State<RandomList> {
         child: Icon(Icons.star),
       ),
       onTap: () {
-        wordsBloc.add(MakeRandomWords(10));
+        wordsBloc.add(const MakeRandomWords(10));
       },
     );
   }

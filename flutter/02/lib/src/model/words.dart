@@ -8,7 +8,7 @@ class Words {
   Set<WordPair> get saved => _saved;
 
   makeRandomWord(int count) {
-    _suggestions.addAll(generateWordPairs().take(10));
+    _suggestions.addAll(generateWordPairs().take(count));
   }
 
   addSave(WordPair pair) {

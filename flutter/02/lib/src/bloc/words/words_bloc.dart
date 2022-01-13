@@ -24,7 +24,6 @@ class WordsBloc extends Bloc<WordsEvent, WordsState> {
   Stream<WordsState> _mapMakeRandomWordsToState(MakeRandomWords event) async* {
     try {
       yield WordsMakeRandom(state.words, event.count);
-      yield WordsReload(state.words);
     } catch (_) {
       print("error");
       yield WordsLoading(state.words);

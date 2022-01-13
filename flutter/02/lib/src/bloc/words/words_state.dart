@@ -34,14 +34,16 @@ class WordsMakeRandom extends WordsState {
   @override
   final Words words;
   final int count;
+  late final int lastCount;
 
   WordsMakeRandom(this.words, this.count) {
+    lastCount = words.suggestions.length;
     words.makeRandomWord(count);
   }
 
   @override
   List<Object> get props {
-    return [words];
+    return [lastCount, count];
   }
 
   @override
